@@ -7,3 +7,4 @@ next-env.d.ts
 .env*.local
 # Built from sw/sw.ts by `npm run sw`
 public/sw.js
+.neon

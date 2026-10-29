@@ -13,6 +13,8 @@
     "test": "node --import tsx --test --test-concurrency=1 tests/*.test.ts"
   },
   "dependencies": {
+    "@neon/config": "^1.9.5",
+    "@neon/env": "^1.6.6",
     "@vercel/functions": "^3.10.4",
     "jose": "^6.2.14",
     "next": "^16.4.3",

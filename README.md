@@ -37,15 +37,16 @@ sign-outs, idempotent retries, anonymity of responses, CSRF, rate limiting and t
 
 ## Deploy on Vercel with Neon
 
-1. **Database.** Add Neon from the Vercel Marketplace (it sets `DATABASE_URL`), or create a Neon
-   project and copy its *pooled* connection string.
+1. **Database.** This repo is linked to the Neon project `shouch-alay` (`.neon`, `neon.ts`).
+   `neon env pull` writes `DATABASE_URL` (pooled, for the app) and `DATABASE_URL_UNPOOLED`
+   (direct, used by `npm run migrate`) into `.env.local`; copy both into the Vercel project.
 2. **Google sign-in.** In Google Cloud Console, create an OAuth client of type *Web application*
    with the redirect URI `https://<your-domain>/auth/callback`. Set the OAuth consent screen to
    *Internal*, so Google itself only admits odoo.com accounts; the server checks again anyway.
 3. **Push keys.** `npx web-push generate-vapid-keys`.
 4. **Environment.** Set the variables below in the Vercel project.
-5. **Schema.** `DATABASE_URL='<neon url>' npm run migrate && DATABASE_URL='<neon url>' npm run seed`.
-   Run `migrate` again whenever `migrations/` changes.
+5. **Schema.** `npm run migrate && npm run seed` (reads `.env.local`). Run `migrate` again whenever
+   `migrations/` changes; try it on a Neon branch first (`neon checkout <name>`).
 6. **Deploy.** `vercel deploy --prod`, or push to the connected Git repository.
 
 **Cron and plan.** `vercel.json` runs `/api/cron/tick` every minute, which needs the **Pro** plan.

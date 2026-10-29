@@ -7,7 +7,9 @@ const cache = globalThis as typeof globalThis & { looPool?: Pool };
 
 export function db(): Pool {
   if (!cache.looPool) {
-    const pool = new Pool({ connectionString: required('DATABASE_URL') });
+    // Neon URLs ask for channel_binding=require, which pg only honours through this flag. It uses
+    // SCRAM-SHA-256-PLUS when the server offers it (Neon over TLS) and plain SCRAM otherwise.
+    const pool = new Pool({ connectionString: required('DATABASE_URL'), enableChannelBinding: true });
     // Idle clients can be dropped by the server (Neon scales to zero); log instead of crashing.
     pool.on('error', (err) => console.error('Idle database client error:', err.message));
     // On Vercel Fluid compute, keeps the instance alive until idle connections close cleanly.

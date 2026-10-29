@@ -26,6 +26,8 @@ if (import.meta.url === pathToFileURL(process.argv[1] ?? '').href) {
   } catch {
     // No .env.local: use the real environment.
   }
+  // Neon: schema changes go over the direct connection; the pooled one (PgBouncer) is for app traffic.
+  if (process.env.DATABASE_URL_UNPOOLED) process.env.DATABASE_URL = process.env.DATABASE_URL_UNPOOLED;
   const applied = await migrate();
   console.log(applied.length ? `Applied ${applied.join(', ')}` : 'Database is up to date');
   await db().end();
