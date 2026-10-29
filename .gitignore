@@ -1,0 +1,9 @@
+node_modules/
+.next/
+.vercel/
+next-env.d.ts
+*.tsbuildinfo
+.env
+.env*.local
+# Built from sw/sw.ts by `npm run sw`
+public/sw.js
